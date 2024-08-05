@@ -35,8 +35,8 @@ El informe de cobertura se generará en el directorio coverage.
 Las pruebas están organizadas en archivos .spec.ts ubicados junto a los archivos de código fuente correspondientes. Las pruebas están configuradas para usar Jest como framework de pruebas.
 
 # Nota
-El proyecto de repo-interview-main no tiene habilitado la configuración de CORS, para que funcione correctamente el consumo de este micro servicio, se debe descomentar la opción 
-en la clase main.ts
+El proyecto de **repo-interview-main** no tiene habilitado la configuración de CORS, para que funcione correctamente el consumo de este micro servicio, se debe descomentar la opción 
+en la clase **main.ts**
 ```typescript
 cors:true
 ```
