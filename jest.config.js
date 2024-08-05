@@ -1,30 +1,22 @@
 module.exports = {
-    preset: 'jest-preset-angular',
-    setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
-    testPathIgnorePatterns: [
-      "/node_modules/",
-      "/dist/"
-    ],
-    globals: {
-      'ts-jest': {
-        tsconfig: 'tsconfig.spec.json',
-        stringifyContentPathRegex: '\\.html$',
-        astTransformers: {
-          before: [
-            'jest-preset-angular/build/InlineFilesTransformer',
-            'jest-preset-angular/build/StripStylesTransformer'
-          ]
-        }
-      }
-    },
-    moduleFileExtensions: ['ts', 'html', 'js', 'json', 'mjs'],
-    transform: {
-      '^.+\\.(ts|js|html|mjs)$': 'ts-jest',
-    },
-    transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
-    moduleNameMapper: {
-      '^@/(.*)$': '<rootDir>/src/$1',
-    },
-    testEnvironment: 'jsdom',
-  };
-  
+  preset: 'jest-preset-angular',
+  setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
+  testEnvironment: 'jsdom',
+  globals: {
+    'ts-jest': {
+      tsconfig: '<rootDir>/tsconfig.spec.json'
+    }
+  },
+  moduleNameMapper: {
+    '^src/(.*)$': '<rootDir>/src/$1',
+    '^@env/(.*)$': '<rootDir>/src/environments/$1'
+  },
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageReporters: ['json', 'html', 'text'],
+  collectCoverageFrom: [
+    'src/**/*.ts',
+    '!src/**/*.module.ts',
+    '!src/**/*.mock.ts',
+  ],
+};

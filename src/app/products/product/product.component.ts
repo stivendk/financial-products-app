@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { empty, of, switchMap, tap } from 'rxjs';
@@ -14,7 +14,7 @@ import { ErrorMessages } from 'src/app/models/error-message.model';
 export class ProductComponent implements OnInit {
   [x: string]: any;
 
-  private isEditMode: boolean = false;
+  isEditMode: boolean = false;
   productForm: FormGroup;
   title: string | any;
   minDate: string;
@@ -27,6 +27,7 @@ export class ProductComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private errorMessage: ErrorMessage,
+    private ngZone: NgZone
   ) {
     this.productForm = this.fb.group({
       id: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
@@ -36,7 +37,7 @@ export class ProductComponent implements OnInit {
       date_release: ['', Validators.required],
       date_revision: ['', Validators.required]
     });
-    
+
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
   }
@@ -45,7 +46,7 @@ export class ProductComponent implements OnInit {
     this.showProduct();
   }
 
-  showProduct(){
+  showProduct() {
     this.route.params.pipe(
       switchMap(params => {
         if (params['id']) {
@@ -88,11 +89,15 @@ export class ProductComponent implements OnInit {
       let productData = this.productForm.value;
       if (this.isEditMode) {
         this.productService.updateProduct(this.productForm.get('id')?.value, productData).subscribe(() => {
-          this.router.navigate(['/products']);
+          this.ngZone.run(() => {
+            this.router.navigate(['/products']);
+          });
         });
       } else {
         this.productService.createProduct(productData).subscribe(() => {
-          this.router.navigate(['/products']);
+          this.ngZone.run(() => {
+            this.router.navigate(['/products']);
+          });
         });
       }
     } else {
@@ -113,7 +118,7 @@ export class ProductComponent implements OnInit {
     return errors;
   }
 
-  resetForm(){
+  resetForm() {
     this.productForm.reset();
     this.errors = {};
   }
@@ -121,9 +126,8 @@ export class ProductComponent implements OnInit {
   invalidField(controlName: string) {
     if (this.productForm.get(controlName)?.valid) {
       delete this.errors[controlName];
-
-      console.log(this.errors);
-      
+    } else {
+      this.errors[controlName] = this.getFormValidationErrors()[controlName] || [];
     }
   }
 }

@@ -1,3 +1,6 @@
+<section>
+    <a class="btn-back-home" routerLink="/">Volver</a>
+</section>
 <section class="product-form">
     <div class="header-form">
         <h1 class="title">{{title}}</h1>
@@ -7,7 +10,7 @@
         <div class="form-section">
             <div class="form-group">
                 <label for="id">ID</label>
-                <input id="id" formControlName="id" class="form-control"
+                <input id="id" [readOnly]="isEditMode" formControlName="id" class="form-control"
                     [ngClass]="{'error-border': errors['id']}"
                     (input)="invalidField('id')" />
                 <div *ngIf="errors['id']" class="error-messages">

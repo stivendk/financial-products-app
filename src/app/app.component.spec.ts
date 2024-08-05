@@ -1,35 +1,61 @@
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { LoadingService } from './services/loading.service';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let loadingService: LoadingService;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterTestingModule
       ],
-      declarations: [
-        AppComponent
-      ],
+      declarations: [AppComponent],
+      providers: [
+        {
+          provide: LoadingService,
+          useValue: {
+            isLoading$: of(false)
+          }
+        }
+      ]
     }).compileComponents();
   });
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'financial-products-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('financial-products-app');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    loadingService = TestBed.inject(LoadingService);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('financial-products-app app is running!');
+  })
+
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should initialize with title "financial-products-app"', () => {
+    expect(component.title).toBe('financial-products-app');
+  });
+
+  it('should initialize isLoading to false', () => {
+    expect(component.isLoading).toBe(false);
+  });
+
+  it('should update isLoading based on loadingService', () => {
+    const mockLoadingService = TestBed.inject(LoadingService) as any;
+    mockLoadingService.isLoading$ = of(true);
+    
+    component.ngOnInit();
+    fixture.detectChanges();
+
+    expect(component.isLoading).toBe(true);
   });
 });

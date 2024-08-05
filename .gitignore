@@ -5,6 +5,9 @@
 # Dependencies
 /node_modules
 
+# Test
+/coverage
+
 # Angular-specific
 /.angular
 .angular-cache
