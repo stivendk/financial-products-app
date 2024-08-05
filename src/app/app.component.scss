@@ -1,0 +1,24 @@
+header {
+    background-color: #FF8080;
+    padding: 10px 0;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo img {
+    height: 6rem;
+}
+
+main {
+    padding: 3rem;
+}
+
+@media (max-width: 768px) {
+    main {
+        padding: 1.5rem;
+    }
+}

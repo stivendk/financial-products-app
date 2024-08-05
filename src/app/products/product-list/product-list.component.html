@@ -1,0 +1,65 @@
+<section>
+    <div class="top-actions">
+        <input class="search-text" type="text" placeholder="Buscar..." (input)="onSearchTextChange($event)" />
+        <button class="btn-add"(click)="addProduct()" >Agregar</button>
+    </div>
+
+
+    <div *ngIf="!products.length; else dataProducts" class="data">
+        <h1>No hay datos.</h1>
+    </div>
+    <ng-template #dataProducts>
+        <table>
+            <thead>
+                <tr>
+                    <th>Logo</th>
+                    <th>Nombre del producto</th>
+                    <th>Descripción</th>
+                    <th>Fecha de liberación</th>
+                    <th>Fecha de reestructuración</th>
+                    <th class="actions none"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of displayedProducts; let i = index">
+                    <td class="logo">
+                        <div class="circle">
+                            <img src="{{product.logo}}"
+                                alt="">
+                        </div>
+                    </td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.description}}</td>
+                    <td>{{product.date_release}}</td>
+                    <td>{{product.date_revision}}</td>
+                    <td class="actions">
+                        <div class="dropdown">
+                            <a class="dropdown-button" (click)="toggleDropdown(i)">&#8942;</a>
+                            <div class="dropdown-menu" *ngIf="isOpen[i]">
+                                <button [attr.data-option]="option" class="dropdown-item" *ngFor="let option of options"
+                                    (click)="selectOption(option, product)">{{option}}</button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <aside>
+            <span class="result">
+                {{totalResults}} Resultados
+            </span>
+            <div *ngIf="totalResults > itemsPerPage" class="pagination">
+                <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">{{previous}}</button>
+                <span>Página {{currentPage}} de {{totalPages}}</span>
+                <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">{{next}}</button>
+            </div>
+            <select class="search-text" (change)="onItemsPerPageChange($event)">
+                <option *ngFor="let size of pageSizeOptions" [value]="size" [selected]="size === itemsPerPage">
+                    {{size}}
+                </option>
+            </select>
+        </aside>
+    </ng-template>
+    
+    <app-confirm-modal *ngIf="showModal" (confirmAction)="confirmRemove()" (cancelAction)="cancelModal()"></app-confirm-modal>
+</section>

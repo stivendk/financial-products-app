@@ -1,0 +1,75 @@
+<section class="product-form">
+    <div class="header-form">
+        <h1 class="title">{{title}}</h1>
+    </div>
+    <form [formGroup]="productForm" (ngSubmit)="submitForm()">
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="id">ID</label>
+                <input id="id" formControlName="id" class="form-control"
+                    [ngClass]="{'error-border': errors['id']}"
+                    (input)="invalidField('id')" />
+                <div *ngIf="errors['id']" class="error-messages">
+                    <div *ngFor="let error of errors['id']">{{ error }}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name">Nombre</label>
+                <input id="name" formControlName="name" class="form-control"
+                    [ngClass]="{'error-border': errors['name']}"
+                    (input)="invalidField('name')" />
+                <div *ngIf="errors['name']" class="error-messages">
+                    <div *ngFor="let error of errors['name']">{{ error }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="logo">Logo URL</label>
+            <input id="logo" formControlName="logo" class="solo-input form-control"
+                [ngClass]="{'error-border': errors['logo']}"
+                (input)="invalidField('logo')" />
+            <div *ngIf="errors['logo']" class="error-messages">
+                <div *ngFor="let error of errors['logo']">{{ error }}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea id="description" formControlName="description" class="solo-input form-control"
+                [ngClass]="{'error-border': errors['description']}"
+                (input)="invalidField('description')"></textarea>
+            <div *ngIf="errors['description']" class="error-messages">
+                <div *ngFor="let error of errors['description']">{{ error }}</div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="date_release">Fecha Liberación</label>
+                <input id="date_release" formControlName="date_release" type="date" class="form-control"
+                    (change)="onReleaseDateChange($event)" [attr.min]="minDate"
+                    [ngClass]="{'error-border': errors['date_release']}"
+                    (input)="invalidField('date_release')" />
+                <div *ngIf="errors['date_release']" class="error-messages">
+                    <div *ngFor="let error of errors['date_release']">{{ error }}</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="date_revision">Fecha Revisión</label>
+                <input id="date_revision" formControlName="date_revision" type="date" class="form-control"
+                    [attr.min]="minRevisionDate" [readOnly]="true"
+                    [ngClass]="{'error-border': errors['date_revision']}"
+                    (input)="invalidField('date_revision')"/>
+            </div>
+        </div>
+
+
+        <div class="form-group btn-group">
+            <button type="button" class="btn-reset" (click)="resetForm()">Resetear</button>
+            <button type="submit" class="btn-create">Registrar</button>
+        </div>
+    </form>
+</section>
